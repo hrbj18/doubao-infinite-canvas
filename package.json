@@ -1,0 +1,23 @@
+{
+  "name": "canvas-studio",
+  "version": "0.2.12",
+  "private": true,
+  "description": "豆包 / Dola 本地视频画布与 MCP 任务工作台",
+  "main": "src/desktop.cjs",
+  "scripts": {
+    "start": "electron .",
+    "preview": "node src/preview.cjs",
+    "mcp": "node src/mcp.mjs",
+    "test": "node --test test/*.test.cjs",
+    "check": "node scripts/check.cjs",
+    "package": "electron-packager . CanvasStudio --platform=win32 --arch=x64 --out=dist --overwrite --ignore=^/data --ignore=^/test --ignore=^/dist --ignore=^/creative --ignore=^/validation"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "@electron/packager": "^19.0.1"
+  }
+}

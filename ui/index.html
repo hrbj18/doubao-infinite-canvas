@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Canvas Studio · 视频工作台</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brandmark">C</span><span>CANVAS<span class="brand-light"> STUDIO</span><small>视频创作工作台</small></span></div>
+    <div class="project-heading"><span class="folder-mark">◇</span><select id="project-select" aria-label="切换项目"></select><button id="rename-project" class="icon-button" title="重命名项目">✎</button><span id="save-status">已保存</span></div>
+    <div class="header-right"><span id="connection" class="connection">本地工作台</span><button id="new-project" class="button subtle">＋ 新建项目</button></div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="workspace-label">WORKSPACE <span>01</span></div>
+      <nav><button data-view="canvas" class="nav-item active"><span>▦</span>创作画布<small>∞</small></button><button data-view="tasks" class="nav-item"><span>☷</span>任务队列<small id="task-count">0</small></button><button data-view="accounts" class="nav-item"><span>◉</span>账号池<small id="account-count">0</small></button></nav>
+      <div class="side-divider"></div>
+      <div class="section-label">平台连接 <span>PLATFORMS</span></div>
+      <div id="platform-summary"></div>
+      <div class="side-note"><span class="note-dot"></span><div>让创意持续发生<small>账号独立登录 · 自动分配任务</small></div></div>
+      <div class="sidebar-bottom"><button data-view="settings" class="nav-item"><span>⚙</span>连接与数据</button><div class="version">Canvas Studio <span>v0.2.12</span></div></div>
+    </aside>
+    <main id="main">
+      <section id="canvas-view" class="view">
+        <div class="canvas-toolbar"><div><span class="eyebrow">INFINITE CANVAS</span><strong id="canvas-title">创作画布</strong><small id="validation-status"></small></div><div class="tools"><button id="add-image" class="button">＋ 图片</button><button id="add-generation" class="button primary">＋ 生成节点</button><button id="add-video" class="button">＋ 视频</button><button id="export-project" class="button">导出成片</button><button id="fit-canvas" class="button subtle">适配视图</button></div></div>
+        <div class="canvas-layout"><div id="canvas" tabindex="0" aria-label="无限画布"><div id="scene"><svg id="edges" aria-hidden="true"></svg><div id="nodes"></div></div><div class="canvas-guide"><span>拖动节点</span><span>空白处拖动画布</span><span>滚轮缩放</span><span>点击端口连线</span></div><div class="zoom-controls"><button id="zoom-out" aria-label="缩小">−</button><span id="zoom-level">100%</span><button id="zoom-in" aria-label="放大">＋</button></div><div id="empty-canvas" hidden>导入一张图片，开始你的第一段视频。</div></div><aside id="inspector" class="inspector"></aside></div>
+      </section>
+      <section id="accounts-view" class="view page-view" hidden></section>
+      <section id="tasks-view" class="view page-view" hidden></section>
+      <section id="settings-view" class="view page-view" hidden></section>
+    </main>
+  </div>
+  <input id="file-input" type="file" multiple hidden>
+  <dialog id="account-dialog"><form id="account-form"><div class="dialog-heading"><div><span class="eyebrow">NEW ACCOUNT</span><h2>添加账号</h2></div><button type="button" id="close-account" class="icon-button">×</button></div><label>账号名称<input id="account-name" required maxlength="80" placeholder="例如：豆包账号 01"></label><label>所属平台<select id="account-platform"><option value="doubao">国内豆包</option><option value="dola">海外 Dola</option></select></label><label>每日生成预算<input id="account-limit" type="number" min="0" max="10000" value="1" required></label><p id="account-budget-help" class="help">国内账号自动同步平台反馈；未知余额不显示为满额。</p><button class="button primary full" type="submit">添加并打开登录窗口</button></form></dialog>
+  <div id="toast" role="status"></div>
+  <dialog id="cookie-dialog"><form id="cookie-form" autocomplete="off"><div class="dialog-heading"><div><span class="eyebrow">COOKIE LOGIN</span><h2 id="cookie-title">导入 Cookie 账号</h2></div><button type="button" id="close-cookie" class="icon-button" aria-label="关闭 Cookie 导入">×</button></div>
+    <label for="cookie-target">导入到</label><select id="cookie-target"></select>
+    <div class="field-pair"><div><label for="cookie-platform">所属平台</label><select id="cookie-platform"><option value="doubao">国内豆包</option><option value="dola">海外 Dola</option></select></div><div><label for="cookie-limit">每日生成预算</label><input id="cookie-limit" type="number" min="0" max="10000" value="1" required></div></div>
+    <label for="cookie-name">账号名称</label><input id="cookie-name" required maxlength="80" placeholder="例如：Dola Cookie 01">
+    <label for="cookie-text">Cookie 内容</label><textarea id="cookie-text" class="masked" required spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="粘贴 Cookie-Editor JSON 或 name=value; …"></textarea>
+    <div class="cookie-tools"><label class="button" for="cookie-file">选择 .txt / .json 文件</label><input id="cookie-file" type="file" accept=".txt,.json" hidden><button id="cookie-show" type="button" class="button subtle" aria-pressed="false">显示内容</button><button id="cookie-preview" type="button" class="button subtle">检查格式</button></div>
+    <p id="cookie-summary" class="help" role="status">支持 Cookie-Editor JSON 和 Cookie 文本。说明、卡密不会进入账号记录。</p>
+    <p class="help cookie-notice">Cookie 以本机系统加密保存，导入后在后台检测登录。更新会替换该账号登录会话，保留预算、用量与任务记录。没有到期信息时显示“有效期未知”；平台仍可能提前使会话失效。</p>
+    <button id="cookie-submit" class="button primary full" type="submit">导入并检测登录</button><p id="cookie-error" class="help error" role="alert"></p>
+  </form></dialog>
+  <dialog id="export-dialog"><form id="export-form"><div class="dialog-heading"><h2>按顺序导出成片</h2><button type="button" id="close-export" class="icon-button">×</button></div><p class="help">直接拼接、保留原声。勾选片段并调整顺序，原视频会完整保留。</p><div id="export-clips"></div><label for="export-duration">目标总时长（秒）</label><input id="export-duration" type="number" min="0.01" max="3600" step="0.01" placeholder="留空按实际总长"><p class="help">只裁成片末尾；不足目标时长时等待补充片段。</p><button id="export-submit" class="button primary full" type="submit">合并并保存到画布</button><p id="export-error" class="help error" role="status"></p></form></dialog>
+  <dialog id="review-dialog"><div class="dialog-heading"><h2>视频动作与首尾效果对照</h2><button type="button" id="close-review" class="icon-button" aria-label="关闭效果对照">×</button></div><div id="review-content"></div></dialog>
+  <script src="/video-evidence.js"></script>
+  <script src="/app.js"></script>
+</body></html>

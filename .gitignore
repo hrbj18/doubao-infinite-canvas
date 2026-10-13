@@ -1,0 +1,29 @@
+node_modules/
+dist/
+dist-dola30/
+data/
+data-preview/
+*.log
+
+# Local credentials and environment configuration
+.env
+.env.*
+!.env.example
+credentials/
+sessions/
+runtime.json
+*.pem
+*.key
+
+# Personal media, account validation records, and agent memory
+/creative/
+/validation/
+/.workbuddy/
+/scripts/debug/
+/scripts/record-doubao15-test.cjs
+/scripts/validate-dola-delivery.mjs
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
